@@ -1,8 +1,10 @@
+const productos = []
+const URL = 'js/productos.json'
+const container = document.querySelector('div.container')
 
-const col = document.querySelector('div.container')
-
-function retornarcardHTML(producto) {
-     return  `<div class="col">
+retornarcardHTML = (producto) => {
+    return `
+     <div class="col">
         <div class="card" style="width: 18rem;">
             <img src="${producto.imagen}" class="card-img-top" alt="...">
             <div class="card-body">
@@ -12,40 +14,45 @@ function retornarcardHTML(producto) {
                 <button class="button button-outline button-add" id="${producto.id}" title="Clic para agregar al carrito">+</button>
             </div>
           </div>
-        </div>`;}
-     
-    /* <div class="card">
-                <div class="card-image"><img src="${producto.imagen}"></div>
-                <div class="card-name">${producto.nombre}</div>
-                <div class="card-price">${producto.precio}</div>
-                <div class="card-button">
-                    <button class="button button-outline button-add" id="${producto.id}" title="Clic para agregar al carrito">+</button>
-                </div>
-            </div>`;}*/
-
-
-const cargarproductos = (array) => {
-    if(array.length > 0){
-        array.forEach(producto => {
-            container.innerHTML += retornarcardHTML(producto)
-        });
-    }
+        </div>`;
 }
 
-cargarproductos(productos)
+/* <div class="card">
+            <div class="card-image"><img src="${producto.imagen}"></div>
+            <div class="card-name">${producto.nombre}</div>
+            <div class="card-price">${producto.precio}</div>
+            <div class="card-button">
+                <button class="button button-outline button-add" id="${producto.id}" title="Clic para agregar al carrito">+</button>
+            </div>
+        </div>`;}*/
 
 
-const activarclickenbotones = () => {
+const activarClickEnBotones = () => {
     const botonesagregar = document.querySelectorAll('.button.button-outline.button-add')
-    if (typeof botonesagregar !== null){
-        for (const boton of botonesagregar){
-            boton.addEventListener('click',(event)=>{
-                agregaralcarrito(event.target.id)
+    if (typeof botonesagregar !== null) {
+        for (const boton of botonesagregar) {
+            boton.addEventListener('click', (event) => {
+                agregarAlCarrito(event.target.id)
             })
         }
     }
 }
 
+const cargarProductos = (array) => {
+    if (array.length > 0) {
+        array.forEach(producto => {
+            container.innerHTML += retornarcardHTML(producto)
+        });
+        activarClickEnBotones()
+    }
+}
 
-cargarproductos (productos);
-activarclickenbotones()
+
+const obtenerProducto = () => {
+    fetch(URL)
+        .then((response) => response.json())
+        .then((data) => productos.push(...data))
+        .then(() => cargarProductos(productos))
+}
+
+obtenerProducto()
