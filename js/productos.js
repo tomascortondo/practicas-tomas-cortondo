@@ -1,7 +1,7 @@
 
 const productos = [
     {id:1,
-        imagen: "buzo1.webp"
+        imagen: "buzo1.webp",
         nombre: "BUZO",
         precio: 220
     },
